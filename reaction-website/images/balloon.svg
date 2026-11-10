@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200" role="img" aria-label="气球">
+  <path d="M100 55 C140 55 158 88 150 115 C143 138 118 145 100 150 C82 145 57 138 50 115 C42 88 60 55 100 55 Z" fill="#f472b6"/>
+  <path d="M100 150 L92 188 L108 188 Z" fill="#9aa7cc"/>
+  <path d="M70 90 A30 30 0 0 1 90 70" fill="none" stroke="#ffffff" stroke-width="6" stroke-linecap="round" opacity=".5"/>
+</svg>

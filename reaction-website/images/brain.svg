@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200" role="img" aria-label="大脑">
+  <g fill="none" stroke="#22d3ee" stroke-width="6" stroke-linecap="round">
+    <path d="M100 28 C52 28 38 54 38 84 C38 104 28 110 28 126 C28 146 54 156 70 150 C78 170 105 176 120 166 C140 180 172 166 174 146 C192 140 192 114 177 108 C187 90 177 64 156 58 C161 40 130 28 100 28 Z"/>
+  </g>
+  <circle cx="100" cy="95" r="10" fill="#34d399"/>
+  <circle cx="74" cy="70" r="6" fill="#fbbf24"/>
+  <circle cx="128" cy="70" r="6" fill="#f472b6"/>
+  <circle cx="70" cy="126" r="6" fill="#fbbf24"/>
+  <circle cx="130" cy="126" r="6" fill="#f472b6"/>
+</svg>

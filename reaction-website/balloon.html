@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>30 秒打气球 · 反应力小游戏 | 邓子贤</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="brand"><span class="dot"></span>⚡ 反应力觉醒</div>
+  <div class="nav-links">
+    <a href="index.html">主页</a>
+    <a href="story.html">我的故事</a>
+    <a href="reaction-test.html">变色反应</a>
+    <a href="balloon.html" class="active">打气球</a>
+    <a href="sleep-analyzer.html">作息分析</a>
+    <a href="sleep-tips.html">睡眠建议</a>
+    <a href="science.html">科学原理</a>
+    <a href="training.html">训练方法</a>
+    <a href="about.html">关于</a>
+  </div>
+</nav>
+
+<section class="wrap hero">
+  <h1>30 秒打气球</h1>
+  <p class="lead">FPS 式反应力挑战：气球会随机刷新，30 秒内看看你能打掉多少个。</p>
+</section>
+
+<section class="wrap">
+  <div class="game-wrap">
+    <div class="stat-row">
+      <div class="stat"><b id="time">30</b><span>剩余秒数</span></div>
+      <div class="stat"><b id="score">0</b><span>得分</span></div>
+    </div>
+
+    <div class="balloon-arena" id="arena">
+      <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#9aa7cc" id="hint">点击「开始游戏」，气球会随机出现，快戳它们！</div>
+    </div>
+
+    <p><button class="btn" id="start">开始游戏</button></p>
+    <p id="msg" class="note" style="display:none"></p>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="brand"><span class="dot"></span>⚡ 反应力觉醒</div>
+  <p style="margin:8px 0 0">作者：邓子贤 · <a href="index.html">返回主页</a></p>
+</footer>
+
+<script>
+(function(){
+  var arena = document.getElementById('arena');
+  var startBtn = document.getElementById('start');
+  var timeEl = document.getElementById('time');
+  var scoreEl = document.getElementById('score');
+  var hint = document.getElementById('hint');
+  var msg = document.getElementById('msg');
+
+  var BALLOONS = 6;
+  var playing = false, score = 0, timeLeft = 30, timer = null;
+
+  function showMsg(text){ msg.textContent = text; msg.style.display = 'block'; }
+
+  function spawnBalloon(){
+    var b = document.createElement('div');
+    b.className = 'balloon';
+    b.textContent = '🎈';
+    var maxX = Math.max(10, arena.clientWidth - 70);
+    var maxY = Math.max(10, arena.clientHeight - 70);
+    b.style.left = (10 + Math.random() * maxX) + 'px';
+    b.style.top = (10 + Math.random() * maxY) + 'px';
+    b.style.filter = 'hue-rotate(' + Math.floor(Math.random() * 360) + 'deg)';
+    b.addEventListener('click', function(e){
+      if (!playing) return;
+      e.stopPropagation();
+      score++;
+      scoreEl.textContent = score;
+      // 爆炸特效
+      var burst = document.createElement('div');
+      burst.className = 'burst';
+      burst.textContent = '💥';
+      burst.style.left = b.style.left;
+      burst.style.top = b.style.top;
+      arena.appendChild(burst);
+      setTimeout(function(){ burst.remove(); }, 700);
+      // 气球消失并随机刷新一个新的
+      b.classList.add('pop');
+      setTimeout(function(){ b.remove(); }, 180);
+      spawnBalloon();
+    });
+    arena.appendChild(b);
+  }
+
+  function evaluate(n){
+    if (n >= 25) return '反应超快，手速惊人！你一定是那个「早睡选手」⚡';
+    if (n >= 15) return '反应不错！再练练，顺便早点睡，还能更快。';
+    if (n >= 8)  return '继续加油！充足的睡眠能明显提升手速哦。';
+    return '没关系，从今天起早点睡，下次一定能打更多！';
+  }
+
+  function endGame(){
+    playing = false;
+    clearInterval(timer);
+    arena.innerHTML = '';
+    startBtn.disabled = false;
+    hint.style.display = 'flex';
+    hint.textContent = '游戏结束';
+    showMsg('时间到！你一共打了 ' + score + ' 个气球。' + evaluate(score));
+  }
+
+  function startGame(){
+    score = 0;
+    timeLeft = 30;
+    scoreEl.textContent = '0';
+    timeEl.textContent = '30';
+    msg.style.display = 'none';
+    arena.innerHTML = '';
+    hint.style.display = 'none';
+    playing = true;
+    startBtn.disabled = true;
+    for (var i = 0; i < BALLOONS; i++) spawnBalloon();
+    timer = setInterval(function(){
+      timeLeft--;
+      timeEl.textContent = timeLeft;
+      if (timeLeft <= 0) endGame();
+    }, 1000);
+  }
+
+  startBtn.addEventListener('click', startGame);
+})();
+</script>
+</body>
+</html>

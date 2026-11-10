@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200" role="img" aria-label="月亮">
+  <circle cx="100" cy="100" r="66" fill="#fbbf24"/>
+  <circle cx="82" cy="88" r="14" fill="#f59e0b" opacity=".7"/>
+  <circle cx="124" cy="118" r="10" fill="#f59e0b" opacity=".6"/>
+  <circle cx="112" cy="76" r="7" fill="#f59e0b" opacity=".5"/>
+  <circle cx="58" cy="52" r="4" fill="#e8edff"/>
+  <circle cx="152" cy="44" r="3" fill="#e8edff"/>
+  <circle cx="50" cy="150" r="3" fill="#e8edff"/>
+  <circle cx="160" cy="160" r="4" fill="#e8edff"/>
+</svg>

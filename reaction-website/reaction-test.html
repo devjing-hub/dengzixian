@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>变色反应测试 · 反应力小游戏 | 邓子贤</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="brand"><span class="dot"></span>⚡ 反应力觉醒</div>
+  <div class="nav-links">
+    <a href="index.html">主页</a>
+    <a href="story.html">我的故事</a>
+    <a href="reaction-test.html" class="active">变色反应</a>
+    <a href="balloon.html">打气球</a>
+    <a href="sleep-analyzer.html">作息分析</a>
+    <a href="sleep-tips.html">睡眠建议</a>
+    <a href="science.html">科学原理</a>
+    <a href="training.html">训练方法</a>
+    <a href="about.html">关于</a>
+  </div>
+</nav>
+
+<section class="wrap hero">
+  <h1>变色反应测试</h1>
+  <p class="lead">屏幕变绿后立刻点击，测出你的反应时间。共 3 次取平均。</p>
+</section>
+
+<section class="wrap">
+  <div class="game-wrap">
+    <div class="stat-row">
+      <div class="stat"><b id="trial">0</b><span>已完成 / 3 次</span></div>
+      <div class="stat"><b id="avg">-</b><span>平均反应 (ms)</span></div>
+      <div class="stat"><b id="last">-</b><span>上一次 (ms)</span></div>
+    </div>
+
+    <div class="reaction-box" id="box">点击「开始测试」后，等屏幕变绿再点</div>
+
+    <p>
+      <button class="btn" id="start">开始测试</button>
+      <button class="btn ghost" id="reset" style="margin-left:10px">重置</button>
+    </p>
+
+    <p id="msg" class="note" style="display:none"></p>
+    <p style="color:#9aa7cc;font-size:13px;max-width:600px;margin:10px auto 0">
+      规则：点「开始」后屏幕变<strong class="bad">红色</strong>，请耐心等待；变<strong class="good">绿色</strong>的瞬间立刻点击。
+      若在变绿前误触，时间会「倒回 6 秒前」并重置游戏。
+    </p>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="brand"><span class="dot"></span>⚡ 反应力觉醒</div>
+  <p style="margin:8px 0 0">作者：邓子贤 · <a href="index.html">返回主页</a></p>
+</footer>
+
+<script>
+(function(){
+  var box = document.getElementById('box');
+  var startBtn = document.getElementById('start');
+  var resetBtn = document.getElementById('reset');
+  var msg = document.getElementById('msg');
+  var trialEl = document.getElementById('trial');
+  var avgEl = document.getElementById('avg');
+  var lastEl = document.getElementById('last');
+
+  var state = 'idle'; // idle | wait | go
+  var timer = null, goTs = 0;
+  var trials = [];
+
+  function showMsg(text){
+    msg.textContent = text;
+    msg.style.display = 'block';
+  }
+  function hideMsg(){ msg.style.display = 'none'; }
+
+  function resetGame(){
+    state = 'idle';
+    if (timer) clearTimeout(timer);
+    trials = [];
+    box.className = 'reaction-box';
+    box.textContent = '点击「开始测试」后，等屏幕变绿再点';
+    startBtn.disabled = false;
+    startBtn.textContent = '开始测试';
+    trialEl.textContent = '0';
+    avgEl.textContent = '-';
+    lastEl.textContent = '-';
+  }
+
+  function startRound(){
+    if (state !== 'idle') return;
+    hideMsg();
+    state = 'wait';
+    box.className = 'reaction-box wait';
+    box.textContent = '等待中…… 屏幕变绿后立刻点击！';
+    startBtn.disabled = true;
+    startBtn.textContent = '等待中…';
+    var delay = 2000 + Math.random() * 3000; // 2~5 秒随机
+    timer = setTimeout(function(){
+      state = 'go';
+      goTs = performance.now();
+      box.className = 'reaction-box go';
+      box.textContent = '现在点击！';
+    }, delay);
+  }
+
+  box.addEventListener('click', function(){
+    if (state === 'wait'){
+      // 变绿前误触：提示 + 重置
+      state = 'idle';
+      if (timer) clearTimeout(timer);
+      box.className = 'reaction-box';
+      box.textContent = '点击「开始测试」后，等屏幕变绿再点';
+      showMsg('恭喜你！由于你的反应是负数秒，时间正在倒回 6 秒前。');
+      startBtn.disabled = true;
+      setTimeout(resetGame, 1300);
+      return;
+    }
+    if (state === 'go'){
+      var rt = performance.now() - goTs;
+      trials.push(rt);
+      state = 'idle';
+      box.className = 'reaction-box';
+      box.textContent = '点击「开始测试」后，等屏幕变绿再点';
+      lastEl.textContent = Math.round(rt);
+      trialEl.textContent = trials.length;
+      startBtn.disabled = false;
+      if (trials.length >= 3){
+        var avg = trials.reduce(function(a,b){return a+b;}, 0) / trials.length;
+        avgEl.textContent = Math.round(avg);
+        showMsg('3 次完成！平均反应时间 ' + Math.round(avg) + ' 毫秒。想再快一点？试试「训练方法」页。');
+        startBtn.textContent = '再来一轮';
+      } else {
+        showMsg('第 ' + trials.length + ' 次完成：' + Math.round(rt) + ' ms，点「下一轮」继续。');
+        startBtn.textContent = '下一轮';
+      }
+    }
+  });
+
+  startBtn.addEventListener('click', startRound);
+  resetBtn.addEventListener('click', resetGame);
+})();
+</script>
+</body>
+</html>

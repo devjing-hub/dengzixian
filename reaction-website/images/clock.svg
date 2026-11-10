@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200" role="img" aria-label="时钟">
+  <circle cx="100" cy="100" r="85" fill="#121a2e" stroke="#22d3ee" stroke-width="6"/>
+  <line x1="100" y1="100" x2="100" y2="48" stroke="#e8edff" stroke-width="8" stroke-linecap="round"/>
+  <line x1="100" y1="100" x2="143" y2="116" stroke="#34d399" stroke-width="6" stroke-linecap="round"/>
+  <path d="M100 158 L80 96 L100 106 L120 96 Z" fill="#fbbf24"/>
+</svg>

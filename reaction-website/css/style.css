@@ -1,0 +1,198 @@
+/* ============================================================
+   反应力觉醒 —— 全站共享样式
+   主题：增强反应力（速度 / 活力 / 正向）
+   ============================================================ */
+:root{
+  --bg:#0a0f1e;
+  --bg2:#0f172a;
+  --card:#121a2e;
+  --card-hover:#182238;
+  --line:#22304d;
+  --text:#e8edff;
+  --muted:#9aa7cc;
+  --cyan:#22d3ee;
+  --green:#34d399;
+  --amber:#fbbf24;
+  --pink:#f472b6;
+  --red:#fb7185;
+  --grad:linear-gradient(90deg,#22d3ee 0%,#34d399 100%);
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  color:var(--text);
+  line-height:1.75;
+  background:
+    radial-gradient(1100px 560px at 85% -10%, #172554 0%, rgba(23,37,84,0) 60%),
+    radial-gradient(900px 520px at -10% 25%, #0f2f2f 0%, rgba(15,47,47,0) 55%),
+    radial-gradient(900px 700px at 50% 120%, #1e1b4b 0%, rgba(30,27,75,0) 60%),
+    var(--bg);
+  background-attachment:fixed;
+  min-height:100vh;
+}
+a{color:var(--cyan);text-decoration:none}
+a:hover{text-decoration:underline}
+img{max-width:100%;display:block}
+
+/* ---------- 顶部导航 ---------- */
+.nav{
+  position:sticky;top:0;z-index:50;
+  display:flex;align-items:center;gap:18px;
+  padding:12px 22px;
+  background:rgba(10,15,30,.78);
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line);
+  flex-wrap:wrap;
+}
+.brand{font-weight:800;font-size:18px;display:flex;align-items:center;gap:8px}
+.brand .dot{
+  width:10px;height:10px;border-radius:50%;
+  background:var(--grad);box-shadow:0 0 12px rgba(52,211,153,.9);
+}
+.nav-links{display:flex;gap:6px;flex-wrap:wrap;margin-left:auto}
+.nav-links a{
+  color:var(--muted);padding:6px 11px;border-radius:8px;font-size:14px;
+  transition:.15s;white-space:nowrap;
+}
+.nav-links a:hover{color:var(--text);background:var(--card);text-decoration:none}
+.nav-links a.active{color:#06120f;background:var(--grad);font-weight:700}
+
+/* ---------- 容器 / 区块 ---------- */
+.wrap{max-width:1100px;margin:0 auto;padding:0 20px}
+section{padding:52px 0}
+.hero{
+  padding:70px 0 46px;text-align:center;
+}
+.hero h1{
+  font-size:clamp(30px,5vw,54px);margin:10px 0;letter-spacing:1px;
+  background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.hero p.lead{color:var(--muted);max-width:720px;margin:14px auto;font-size:17px}
+
+h2.sec{
+  font-size:26px;margin:0 0 22px;display:flex;align-items:center;gap:10px;
+}
+h2.sec::before{
+  content:"";width:8px;height:26px;border-radius:4px;background:var(--grad);
+}
+
+/* ---------- 卡片网格 ---------- */
+.grid{display:grid;gap:18px;grid-template-columns:repeat(auto-fill,minmax(240px,1fr))}
+.card{
+  background:var(--card);border:1px solid var(--line);border-radius:16px;
+  padding:20px;transition:.18s;color:var(--text);display:block;
+}
+.card:hover{transform:translateY(-4px);background:var(--card-hover);border-color:#31446a;text-decoration:none}
+.card .ico{font-size:32px}
+.card h3{margin:12px 0 6px;font-size:18px}
+.card p{color:var(--muted);font-size:14px;margin:0}
+.tag{
+  display:inline-block;font-size:12px;padding:2px 9px;border-radius:999px;
+  background:rgba(34,211,238,.14);color:var(--cyan);margin-bottom:8px;
+}
+
+/* ---------- 按钮 ---------- */
+.btn{
+  display:inline-block;border:0;cursor:pointer;
+  padding:11px 22px;border-radius:10px;font-size:15px;font-weight:700;
+  background:var(--grad);color:#06120f;transition:.15s;
+}
+.btn:hover{filter:brightness(1.08);transform:translateY(-1px)}
+.btn:active{transform:translateY(0)}
+.btn.ghost{background:transparent;border:1px solid var(--line);color:var(--text)}
+.btn.ghost:hover{border-color:var(--cyan);color:var(--cyan)}
+.btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
+
+/* ---------- 提示块 / 列表 ---------- */
+.note{
+  background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.35);
+  color:#fde68a;border-radius:12px;padding:14px 16px;font-size:14px;
+}
+.good{color:var(--green)}
+.bad{color:var(--red)}
+ul.tips{list-style:none;padding:0;margin:0}
+ul.tips li{padding:10px 0 10px 30px;position:relative;border-bottom:1px dashed var(--line)}
+ul.tips li:last-child{border-bottom:0}
+ul.tips li::before{content:"✔";position:absolute;left:2px;color:var(--green);font-weight:800}
+ul.tips.bad li::before{content:"✘";color:var(--red)}
+
+/* ---------- 表格 ---------- */
+table{width:100%;border-collapse:collapse;background:var(--card);border-radius:12px;overflow:hidden}
+th,td{padding:11px 14px;text-align:left;border-bottom:1px solid var(--line);font-size:14px}
+th{background:#182238;color:var(--cyan);font-weight:700}
+tr:last-child td{border-bottom:0}
+
+/* ---------- 表单 ---------- */
+.field{margin-bottom:16px}
+.field label{display:block;margin-bottom:6px;color:var(--muted);font-size:14px}
+input,select,textarea{
+  width:100%;padding:11px 12px;border-radius:10px;border:1px solid var(--line);
+  background:var(--bg2);color:var(--text);font-size:15px;font-family:inherit;
+}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--cyan)}
+.form-row{display:grid;gap:14px;grid-template-columns:1fr 1fr}
+.form-box{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:24px;margin-top:8px}
+.output{
+  background:var(--bg2);border:1px solid var(--line);border-radius:12px;
+  padding:16px;white-space:pre-wrap;font-size:14px;color:var(--text);margin-top:14px;
+  display:none;line-height:1.8;
+}
+.output.show{display:block}
+
+/* ---------- 页脚 ---------- */
+.footer{
+  border-top:1px solid var(--line);padding:30px 0;margin-top:40px;
+  color:var(--muted);font-size:13px;text-align:center;
+}
+.footer .brand{justify-content:center}
+
+/* ---------- 小游戏通用 ---------- */
+.game-wrap{max-width:760px;margin:0 auto;text-align:center}
+.stat-row{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin:18px 0}
+.stat{
+  background:var(--card);border:1px solid var(--line);border-radius:14px;
+  padding:14px 22px;min-width:130px;
+}
+.stat b{display:block;font-size:28px;color:var(--cyan)}
+.stat span{color:var(--muted);font-size:13px}
+
+/* 变色反应测试 */
+.reaction-box{
+  height:340px;border-radius:20px;border:2px solid var(--line);
+  display:flex;align-items:center;justify-content:center;cursor:pointer;
+  user-select:none;font-size:26px;font-weight:800;transition:background .08s;
+  margin:18px 0;color:#fff;
+}
+.reaction-box.wait{background:var(--red)}
+.reaction-box.go{background:var(--green)}
+
+/* 打气球 */
+.balloon-arena{
+  position:relative;height:430px;border-radius:20px;border:2px solid var(--line);
+  background:radial-gradient(circle at 50% 20%, #16233f 0%, #0b1220 70%);
+  overflow:hidden;margin:18px 0;
+}
+.balloon{
+  position:absolute;font-size:46px;cursor:pointer;line-height:1;
+  transition:transform .12s;user-select:none;animation:float 3s ease-in-out infinite;
+}
+.balloon:hover{transform:scale(1.15)}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.balloon.pop{animation:pop .18s ease forwards}
+@keyframes pop{to{transform:scale(0);opacity:0}}
+.burst{
+  position:absolute;font-size:24px;pointer-events:none;animation:rise .7s ease forwards;color:var(--amber);
+}
+@keyframes rise{to{transform:translateY(-40px);opacity:0}}
+
+/* ---------- 响应式 ---------- */
+@media(max-width:640px){
+  .nav{padding:10px 14px;gap:10px}
+  .nav-links a{padding:5px 8px;font-size:13px}
+  .form-row{grid-template-columns:1fr}
+  .hero{padding:50px 0 30px}
+  section{padding:36px 0}
+}

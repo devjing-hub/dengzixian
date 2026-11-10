@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>作息分析 · DeepSeek 帮你优化作息 | 邓子贤</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="brand"><span class="dot"></span>⚡ 反应力觉醒</div>
+  <div class="nav-links">
+    <a href="index.html">主页</a>
+    <a href="story.html">我的故事</a>
+    <a href="reaction-test.html">变色反应</a>
+    <a href="balloon.html">打气球</a>
+    <a href="sleep-analyzer.html" class="active">作息分析</a>
+    <a href="sleep-tips.html">睡眠建议</a>
+    <a href="science.html">科学原理</a>
+    <a href="training.html">训练方法</a>
+    <a href="about.html">关于</a>
+  </div>
+</nav>
+
+<section class="wrap hero">
+  <h1>作息分析</h1>
+  <p class="lead">填一下你每天的作息，本页会先给你一份即时分析，并生成一段提示词，交给免费的 DeepSeek 做更详细的建议。</p>
+</section>
+
+<section class="wrap">
+  <div style="display:grid;gap:22px;grid-template-columns:1fr 1fr;align-items:start" class="form-2col">
+
+    <div class="form-box">
+      <h3 style="margin-top:0">📝 输入我的作息</h3>
+      <div class="form-row">
+        <div class="field">
+          <label>😴 昨晚睡觉时间</label>
+          <input type="time" id="sleep" value="23:00">
+        </div>
+        <div class="field">
+          <label>🌅 今天起床时间</label>
+          <input type="time" id="wake" value="07:00">
+        </div>
+      </div>
+      <div class="field">
+        <label>白天精力怎么样？</label>
+        <select id="energy">
+          <option value="精神饱满">精神饱满</option>
+          <option value="一般" selected>一般</option>
+          <option value="容易犯困">容易犯困</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>中午午睡吗？</label>
+        <select id="nap">
+          <option value="每天 20-30 分钟">每天 20-30 分钟</option>
+          <option value="偶尔">偶尔</option>
+          <option value="没有" selected>没有</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>平时运动吗？</label>
+        <select id="exercise">
+          <option value="经常">经常</option>
+          <option value="偶尔">偶尔</option>
+          <option value="很少" selected>很少</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>补充说明（可选）</label>
+        <textarea id="note" rows="3" placeholder="例如：最近总是熬夜刷手机、早上起不来……"></textarea>
+      </div>
+      <button class="btn" id="analyze">开始分析</button>
+    </div>
+
+    <div>
+      <div class="form-box">
+        <h3 style="margin-top:0">⚡ 即时分析</h3>
+        <div class="output" id="output"></div>
+      </div>
+
+      <div class="form-box" id="ai-panel" style="display:none">
+        <h3 style="margin-top:0">🤖 交给 DeepSeek 深入分析</h3>
+        <p style="color:#9aa7cc;font-size:13px">
+          网页版 DeepSeek 没有可公开嵌入的接口，所以本页采用「生成提示词 → 复制 → 粘贴到 DeepSeek」的方式，完全免费。
+        </p>
+        <textarea id="prompt" rows="8" readonly style="font-size:13px"></textarea>
+        <p style="margin-top:14px">
+          <button class="btn" id="copy">复制提示词</button>
+          <a class="btn ghost" href="https://chat.deepseek.com/" target="_blank" rel="noopener" style="margin-left:10px">打开 DeepSeek ↗</a>
+        </p>
+        <p style="color:#9aa7cc;font-size:12px;margin-top:8px">提示：打开 DeepSeek 后，直接粘贴刚才复制的提示词发送即可。</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="brand"><span class="dot"></span>⚡ 反应力觉醒</div>
+  <p style="margin:8px 0 0">作者：邓子贤 · <a href="index.html">返回主页</a></p>
+</footer>
+
+<script>
+(function(){
+  function toMin(t){
+    var p = t.split(':').map(Number);
+    return p[0] * 60 + p[1];
+  }
+
+  document.getElementById('analyze').addEventListener('click', function(){
+    var wake = document.getElementById('wake').value;
+    var sleep = document.getElementById('sleep').value;
+    var energy = document.getElementById('energy').value;
+    var nap = document.getElementById('nap').value;
+    var exercise = document.getElementById('exercise').value;
+    var note = document.getElementById('note').value.trim();
+
+    if (!wake || !sleep){ alert('请填写睡觉时间和起床时间'); return; }
+
+    // 计算睡眠时长（跨午夜）
+    var mins = toMin(wake) - toMin(sleep);
+    if (mins <= 0) mins += 24 * 60;
+    var hours = (mins / 60).toFixed(1);
+    var h = parseFloat(hours);
+
+    var lines = ['你的睡眠时长约为 ' + hours + ' 小时。'];
+    if (h < 7) lines.push('• 睡眠不足：建议每晚至少睡够 7 小时，否则白天的反应力、注意力和动态视力都会明显下降。');
+    else if (h <= 9) lines.push('• 睡眠时长良好，请继续保持规律。');
+    else lines.push('• 睡眠偏多：过多睡眠有时反而更困，建议保持 7~9 小时并固定起床时间。');
+
+    if (energy === '容易犯困') lines.push('• 白天容易犯困，说明夜间睡眠质量或时长可能不够。');
+    else if (energy === '一般') lines.push('• 精力一般，可以试着把睡觉时间再提前一点。');
+    else lines.push('• 白天精神饱满，状态不错！');
+
+    if (nap === '没有') lines.push('• 中午可尝试 20 分钟左右的短午睡，有助于下午的专注和反应。');
+    if (exercise === '很少') lines.push('• 每周安排几次运动，能改善睡眠质量和神经反应速度。');
+
+    var output = document.getElementById('output');
+    output.textContent = lines.join('\n');
+    output.classList.add('show');
+
+    // 生成 DeepSeek 提示词
+    var prompt = '我是一名学生，请你作为作息健康顾问，帮我分析我的作息并给出改善建议。\n\n我的作息信息如下：\n- 起床时间：' + wake +
+      '\n- 睡觉时间：' + sleep +
+      '\n- 白天精力：' + energy +
+      '\n- 午睡情况：' + nap +
+      '\n- 运动情况：' + exercise +
+      '\n- 补充说明：' + (note || '无') +
+      '\n\n请从「睡眠时长是否充足、作息是否规律、对反应力/注意力/动态视力的影响」等角度分析，并给出具体、可执行、适合学生的作息建议（尽量分条列出）。';
+
+    document.getElementById('prompt').value = prompt;
+    document.getElementById('ai-panel').style.display = 'block';
+  });
+
+  document.getElementById('copy').addEventListener('click', function(){
+    var p = document.getElementById('prompt');
+    p.select();
+    try { navigator.clipboard.writeText(p.value); } catch(e) {}
+    alert('提示词已复制，去 DeepSeek 粘贴即可。');
+  });
+})();
+</script>
+</body>
+</html>
